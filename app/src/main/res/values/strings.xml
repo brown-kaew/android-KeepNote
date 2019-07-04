@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">KeepNote</string>
+    <string name="take_note">Take a note...</string>
+    <string name="card_title_hint">Title</string>
 </resources>
