@@ -27,7 +27,11 @@ class MainActivity : AppCompatActivity() {
         viewModel.toastText.observe(this, Observer {
             Toast.makeText(this, "$it", Toast.LENGTH_SHORT).show()
         })
+        initInstance()
 
+    }
+
+    private fun initInstance() {
         val recyclerView = findViewById<RecyclerView>(R.id.list_notes)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = StaggeredGridLayoutManager(
@@ -35,6 +39,5 @@ class MainActivity : AppCompatActivity() {
             StaggeredGridLayoutManager.VERTICAL
         )
 
-        recyclerView.adapter = NoteListAdapter()
-    }
+        recyclerView.adapter = NoteListAdapter()    }
 }
