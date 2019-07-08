@@ -43,7 +43,6 @@
                     android:elevation="10dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:onClick="@{()->viewmodel.onAddNote()}"
                     android:background="@drawable/btn_selector"
                     android:textSize="16sp"
                     android:text="@string/take_note"/>

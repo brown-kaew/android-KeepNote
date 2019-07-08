@@ -11,7 +11,8 @@ class MainViewModel : ViewModel() {
     val toastText = _toastText as LiveData<String>
 
     fun onAddNote() {
-        Log.d("${javaClass.simpleName}", "onAddNote()")
+        Log.i("${javaClass.simpleName}", "onAddNote()")
         _toastText.value = "onAddNote()"
+
     }
 }

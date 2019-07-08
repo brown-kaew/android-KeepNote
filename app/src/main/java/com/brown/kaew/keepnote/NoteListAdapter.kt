@@ -9,35 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
 
-    private var noteList = listOf(
-        Note("11111", "aaaaaa"),
-        Note(
-            "22222",
-            "simply dummy text of the printing and typeset a gap eleaseinto electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the r of Letraset sheets"
-        ),
-        Note("33333", "ng industry. "),
-        Note("44444", "lley of ty"),
-        Note(
-            "55555",
-            "into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the r"
-        ),
-        Note(
-            "66666",
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took"
-        ),
-        Note(
-            "77777",
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the r"
-        ),
-        Note(
-            "88888",
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took"
-        ),
-        Note(
-            "99999",
-            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the r"
-        )
-    )
+    private var noteList = emptyList<Note>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteListViewHolder {
         Log.d("viewType", "$viewType")
@@ -57,6 +29,7 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
 
     fun updateNote(list: List<Note>) {
         this.noteList = list
+        Log.i(this.javaClass.simpleName, "note size = ${noteList.size}")
         notifyDataSetChanged()
     }
 
