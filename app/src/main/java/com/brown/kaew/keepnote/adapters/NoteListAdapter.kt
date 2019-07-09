@@ -1,4 +1,4 @@
-package com.brown.kaew.keepnote
+package com.brown.kaew.keepnote.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.brown.kaew.keepnote.data.Note
+import com.brown.kaew.keepnote.R
 
 class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
 

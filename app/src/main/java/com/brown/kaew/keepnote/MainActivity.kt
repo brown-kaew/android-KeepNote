@@ -3,19 +3,24 @@ package com.brown.kaew.keepnote
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.brown.kaew.keepnote.adapters.NoteListAdapter
+import com.brown.kaew.keepnote.data.Note
 import com.brown.kaew.keepnote.databinding.ActivityMainBinding
+import com.brown.kaew.keepnote.viewmodels.MainViewModel
+import com.brown.kaew.keepnote.viewmodels.NoteViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val mViewModel: MainViewModel by lazy { ViewModelProviders.of(this).get(MainViewModel::class.java) }
-    private val noteViewModel by lazy { ViewModelProviders.of(this).get(NoteViewModel(application)::class.java) }
+    private val mViewModel: MainViewModel by lazy { ViewModelProviders.of(this).get(
+        MainViewModel::class.java) }
+    private val noteViewModel by lazy { ViewModelProviders.of(this).get(
+        NoteViewModel(
+            application
+        )::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

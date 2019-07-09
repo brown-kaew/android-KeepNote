@@ -1,4 +1,4 @@
-package com.brown.kaew.keepnote
+package com.brown.kaew.keepnote.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

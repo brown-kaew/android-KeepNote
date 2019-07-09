@@ -1,13 +1,22 @@
-package com.brown.kaew.keepnote
+package com.brown.kaew.keepnote.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.brown.kaew.keepnote.data.Note
+import com.brown.kaew.keepnote.data.NoteDatabase
+import com.brown.kaew.keepnote.data.NoteRepository
 import kotlinx.coroutines.launch
 
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository by lazy { NoteRepository(NoteDatabase.getInstance(application.applicationContext)) }
+    private val repository by lazy {
+        NoteRepository(
+            NoteDatabase.getInstance(
+                application.applicationContext
+            )
+        )
+    }
 
     fun getAllNote() = repository.getAllNotes()
 

@@ -1,8 +1,6 @@
-package com.brown.kaew.keepnote
+package com.brown.kaew.keepnote.data
 
-import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 
 class NoteRepository(private val db: NoteDatabase) {

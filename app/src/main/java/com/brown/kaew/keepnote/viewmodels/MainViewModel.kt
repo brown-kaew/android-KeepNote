@@ -1,4 +1,4 @@
-package com.brown.kaew.keepnote
+package com.brown.kaew.keepnote.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.LiveData

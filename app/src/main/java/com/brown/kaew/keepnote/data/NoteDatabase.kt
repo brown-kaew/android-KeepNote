@@ -1,4 +1,4 @@
-package com.brown.kaew.keepnote
+package com.brown.kaew.keepnote.data
 
 import android.content.Context
 import androidx.room.Database
