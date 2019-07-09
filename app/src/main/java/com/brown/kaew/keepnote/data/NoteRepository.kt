@@ -3,10 +3,16 @@ package com.brown.kaew.keepnote.data
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.*
 
-class NoteRepository(private val db: NoteDatabase) {
+class NoteRepository private constructor(private val noteDao: NoteDao) {
 
-    private var noteDao: NoteDao = db.noteDao()
-    private lateinit var allNotes: LiveData<List<Note>>
+    companion object {
+        // For Singleton instantiation
+        private var instances: NoteRepository? = null
+
+        fun getInstance(noteDao: NoteDao): NoteRepository =
+            instances ?: NoteRepository(noteDao).also { instances = it }
+
+    }
 
 
     fun getAllNotes(): LiveData<List<Note>> = noteDao.getAll()

@@ -38,7 +38,7 @@ abstract class NoteDatabase : RoomDatabase() {
 
             return instance ?: synchronized(this) {
                 instance ?: Room.databaseBuilder(
-                    context.applicationContext,
+                    context,
                     NoteDatabase::class.java,
                     "note"
                 ).addCallback(object : Callback() {

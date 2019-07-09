@@ -15,12 +15,14 @@ import com.brown.kaew.keepnote.viewmodels.NoteViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val mViewModel: MainViewModel by lazy { ViewModelProviders.of(this).get(
-        MainViewModel::class.java) }
-    private val noteViewModel by lazy { ViewModelProviders.of(this).get(
-        NoteViewModel(
-            application
-        )::class.java) }
+    private val mViewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(
+            MainViewModel::class.java
+        )
+    }
+    private val noteViewModel: NoteViewModel by lazy {
+        InjectorUtils.provideNoteViewModelFactory(applicationContext).create(NoteViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,3 +59,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+
