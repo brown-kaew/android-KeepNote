@@ -1,27 +1,22 @@
 package com.brown.kaew.keepnote
 
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.brown.kaew.keepnote.adapters.NoteListAdapter
-import com.brown.kaew.keepnote.data.Note
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.brown.kaew.keepnote.databinding.ActivityMainBinding
 import com.brown.kaew.keepnote.viewmodels.MainViewModel
-import com.brown.kaew.keepnote.viewmodels.NoteViewModel
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var navController: NavController
 
     private val mViewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(
             MainViewModel::class.java
         )
-    }
-    private val noteViewModel: NoteViewModel by lazy {
-        InjectorUtils.provideNoteViewModelFactory(applicationContext).create(NoteViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,32 +26,11 @@ class MainActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewmodel = mViewModel
-        binding.apply {
-
-            // take a note
-            tvTakeNote.setOnClickListener { view ->
-                noteViewModel.insertNotes(
-                    Note("testFromActivity", "Holaddadada")
-                )
-            }
-
-            //RecyclerView
-            listNotes.setHasFixedSize(true)
-            listNotes.layoutManager = StaggeredGridLayoutManager(
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3,
-                StaggeredGridLayoutManager.VERTICAL
-            )
-            val noteListAdapter = NoteListAdapter()
-            listNotes.adapter = noteListAdapter
-
-            //Observe data
-            noteViewModel.getAllNote().observe(this@MainActivity, Observer {
-                noteListAdapter.updateNote(it)
-            })
 
 
-        }
-
+        navController = findNavController(R.id.nav_host_fragment)
+        // set action bar
+        setSupportActionBar(binding.toolBar)
     }
 }
 

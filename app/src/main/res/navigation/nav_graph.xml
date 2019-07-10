@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_graph" app:startDestination="@id/noteFragment">
+
+
+    <fragment android:id="@+id/noteFragment"
+              android:name="com.brown.kaew.keepnote.NoteFragment"
+              android:label="NoteFragment">
+
+        <action android:id="@+id/action_noteFragment_to_noteEditorFragment"
+                app:destination="@id/noteEditorFragment"
+        />
+
+    </fragment>
+
+    <fragment android:id="@+id/noteEditorFragment"
+              android:name="com.brown.kaew.keepnote.NoteEditorFragment"
+              android:label="NoteEditorFragment"/>
+</navigation>
