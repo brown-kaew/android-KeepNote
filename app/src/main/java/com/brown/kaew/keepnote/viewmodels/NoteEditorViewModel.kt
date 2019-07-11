@@ -24,7 +24,7 @@ class NoteEditorViewModel(
     val note = MutableLiveData<String>("")
     val time: LiveData<String> = _time
 
-    lateinit var oldNote: Note
+    var oldNote: Note = Note()
 
     init {
 
