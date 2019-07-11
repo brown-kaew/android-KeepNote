@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -38,7 +40,6 @@ dependencies {
     def ktxVersion = "1.0.2"
     def lifecycleVersion = "2.1.0-alpha02"
     def materialVersion = "1.1.0-alpha06"
-    def navigationVersion = "2.0.0"
     def roomVersion = "2.1.0"
     def runnerVersion = "1.0.1"
     def testExtJunitVersion = "1.1.0"
@@ -52,8 +53,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:${rootProject.navigationVersion}"
+    implementation "androidx.navigation:navigation-ui-ktx:${rootProject.navigationVersion}"
     implementation "androidx.room:room-runtime:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion" // For Kotlin use kapt instead of annotationProcessor
     // optional - Kotlin Extensions and Coroutines support for Room

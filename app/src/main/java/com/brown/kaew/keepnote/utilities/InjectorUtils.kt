@@ -20,8 +20,8 @@ object InjectorUtils {
         return NoteViewModelFactory(getNoteRepository(context))
     }
 
-    fun provideNoteEditorViewModelFactory(context: Context): NoteEditorViewModelFactory {
-        return NoteEditorViewModelFactory(getNoteRepository(context))
+    fun provideNoteEditorViewModelFactory(context: Context, noteId: Int): NoteEditorViewModelFactory {
+        return NoteEditorViewModelFactory(getNoteRepository(context), noteId)
     }
 }
 
@@ -33,10 +33,14 @@ class NoteViewModelFactory(private val noteRepository: NoteRepository) : ViewMod
     }
 }
 
-class NoteEditorViewModelFactory(private val noteRepository: NoteRepository) : ViewModelProvider.NewInstanceFactory() {
+class NoteEditorViewModelFactory(
+    private val noteRepository: NoteRepository,
+    private val noteId: Int
+) :
+    ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return NoteEditorViewModel(noteRepository) as T
+        return NoteEditorViewModel(noteRepository, noteId) as T
     }
 }

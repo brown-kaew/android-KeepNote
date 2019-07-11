@@ -5,11 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity
+@Entity(tableName = "note")
 data class Note(
-    @ColumnInfo val title: String,
-    @ColumnInfo val note: String,
-    @ColumnInfo val date: String = Date().time.toString()
+    @ColumnInfo var title: String = "",
+    @ColumnInfo val note: String = "",
+    @ColumnInfo val date: Calendar = Calendar.getInstance()
 ) {
     @PrimaryKey(autoGenerate = true)
     var nId: Int = 0

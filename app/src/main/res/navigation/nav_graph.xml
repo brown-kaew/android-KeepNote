@@ -16,5 +16,12 @@
 
     <fragment android:id="@+id/noteEditorFragment"
               android:name="com.brown.kaew.keepnote.NoteEditorFragment"
-              android:label="NoteEditorFragment"/>
+              android:label="NoteEditorFragment">
+
+        <argument
+                android:name="noteId"
+                app:argType="integer"
+                android:defaultValue="-1"/>
+    </fragment>
+
 </navigation>

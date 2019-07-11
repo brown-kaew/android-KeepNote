@@ -4,17 +4,27 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.*
 
-@Database(entities = arrayOf(Note::class), version = 1)
+@Database(entities = [Note::class], version = 2, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class NoteDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 
     companion object {
 
         //For Singleton instantiation
-        @Volatile private var instance: NoteDatabase? = null
+        @Volatile
+        private var instance: NoteDatabase? = null
+
+//        val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+//            override fun migrate(database: SupportSQLiteDatabase) {
+//                // Since we didn't alter the table, there's nothing else to do here.
+//            }
+//        }
 
         fun getInstance(context: Context): NoteDatabase {
 //            if (instance == null) {
@@ -50,9 +60,13 @@ abstract class NoteDatabase : RoomDatabase() {
                         }
 
                     }
-                }).build()
+                })
+                    .fallbackToDestructiveMigration()
+//                    .addMigrations(MIGRATION_1_2)
+                    .build()
             }
         }
+
 
         private suspend fun populateDB(db: NoteDatabase?) {
             withContext(Dispatchers.IO) {

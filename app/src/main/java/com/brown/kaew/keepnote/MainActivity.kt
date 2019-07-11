@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding.viewmodel = mViewModel
 
 
-        navController = findNavController(R.id.nav_host_fragment)
+//        navController = findNavController(R.id.nav_host_fragment)
         // set action bar
         setSupportActionBar(binding.toolBar)
     }
