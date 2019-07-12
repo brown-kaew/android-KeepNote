@@ -37,7 +37,7 @@ class NoteEditorViewModel(
         val noteLen = note.value.toString().length
 
         //if new note then insert otherwise update it
-        if (titleLen != 0 && noteLen != 0 && isNewNote) {
+        if ((titleLen != 0 || noteLen != 0) && isNewNote) {
             Log.i(this.javaClass.simpleName, "add new note")
             viewModelScope.launch {
                 repository.insertNote(

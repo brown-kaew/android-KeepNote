@@ -1,18 +1,14 @@
 package com.brown.kaew.keepnote
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.brown.kaew.keepnote.adapters.NoteListAdapter
-import com.brown.kaew.keepnote.data.Note
 import com.brown.kaew.keepnote.databinding.FragmentNoteBinding
 import com.brown.kaew.keepnote.utilities.InjectorUtils
 import com.brown.kaew.keepnote.viewmodels.NoteViewModel
@@ -33,10 +29,6 @@ class NoteFragment : Fragment() {
 
             // take a note
             tvTakeNote.setOnClickListener { view ->
-//                noteViewModel.insertNotes(
-//                    Note("testFromActivity", "Holaddadada")
-//                )
-
                 view.findNavController().navigate(R.id.action_noteFragment_to_noteEditorFragment)
             }
 
@@ -48,7 +40,6 @@ class NoteFragment : Fragment() {
             )
             val noteListAdapter = NoteListAdapter()
             listNotes.adapter = noteListAdapter
-
             //Observe data
             noteViewModel.getAllNote().observe(this@NoteFragment, Observer {
                 noteListAdapter.updateNote(it)
@@ -60,12 +51,4 @@ class NoteFragment : Fragment() {
         return binding.root
     }
 
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
 }
