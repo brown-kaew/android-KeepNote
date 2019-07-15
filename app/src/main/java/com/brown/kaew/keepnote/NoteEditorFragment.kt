@@ -7,24 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.brown.kaew.keepnote.databinding.FragmentNoteEditorBinding
 import com.brown.kaew.keepnote.utilities.InjectorUtils
 import com.brown.kaew.keepnote.utilities.NoteEditorViewModelFactory
-import com.brown.kaew.keepnote.viewmodels.NoteEditorViewModel
+import com.brown.kaew.keepnote.viewmodels.NoteEditorFragmentViewModel
 
 class NoteEditorFragment : Fragment() {
 
     private val args by navArgs<NoteEditorFragmentArgs>()
-    private val isNewNote: Boolean by lazy { args.noteId == -1 }
-    private val viewModel: NoteEditorViewModel by lazy {
+    private val isNewNote: Boolean by lazy { args.noteId == -1L }
+    private val viewModel: NoteEditorFragmentViewModel by lazy {
         //        InjectorUtils.provideNoteEditorViewModelFactory(requireContext(), args.noteId)
-//            .create(NoteEditorViewModel::class.java)
+//            .create(NoteEditorFragmentViewModel::class.java)
         ViewModelProviders.of(this,NoteEditorViewModelFactory(InjectorUtils.getNoteRepository(requireContext()),args.noteId) )
-            .get(NoteEditorViewModel::class.java)
+            .get(NoteEditorFragmentViewModel::class.java)
     }
     private lateinit var binding: FragmentNoteEditorBinding
 
@@ -37,7 +36,7 @@ class NoteEditorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        Log.i(this.javaClass.simpleName, "onCreateView() id${args.noteId}")
+        Log.i(this.javaClass.simpleName, "onCreateView() id= ${args.noteId} $isNewNote")
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -48,14 +47,12 @@ class NoteEditorFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@NoteEditorFragment
 
-        subscribeUi()
-
-
         return binding.root
     }
 
     override fun onStop() {
         super.onStop()
+        Log.i(this.javaClass.simpleName, "call saveNote()")
         viewModel.saveNote()
     }
 
@@ -64,20 +61,4 @@ class NoteEditorFragment : Fragment() {
         Log.i(this.javaClass.simpleName, "onDetach()")
 
     }
-
-    private fun subscribeUi() {
-
-        if (!isNewNote) {
-            viewModel.getById(args.noteId).observe(
-                this, Observer {
-                    it.apply {
-                        viewModel.mapNote(it)
-                    }
-
-                }
-            )
-        }
-    }
-
-
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.brown.kaew.keepnote.data.NoteDatabase
 import com.brown.kaew.keepnote.data.NoteRepository
-import com.brown.kaew.keepnote.viewmodels.NoteEditorViewModel
+import com.brown.kaew.keepnote.viewmodels.NoteEditorFragmentViewModel
 import com.brown.kaew.keepnote.viewmodels.NoteFragmentViewModel
 
 object InjectorUtils {
@@ -20,7 +20,7 @@ object InjectorUtils {
         return NoteViewModelFactory(getNoteRepository(context))
     }
 
-    fun provideNoteEditorViewModelFactory(context: Context, noteId: Int): NoteEditorViewModelFactory {
+    fun provideNoteEditorViewModelFactory(context: Context, noteId: Long): NoteEditorViewModelFactory {
         return NoteEditorViewModelFactory(getNoteRepository(context), noteId)
     }
 }
@@ -35,12 +35,12 @@ class NoteViewModelFactory(private val noteRepository: NoteRepository) : ViewMod
 
 class NoteEditorViewModelFactory(
     private val noteRepository: NoteRepository,
-    private val noteId: Int
+    private val noteId: Long
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return NoteEditorViewModel(noteRepository, noteId) as T
+        return NoteEditorFragmentViewModel(noteRepository, noteId) as T
     }
 }

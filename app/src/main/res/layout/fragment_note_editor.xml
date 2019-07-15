@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.brown.kaew.keepnote.viewmodels.NoteEditorViewModel"
+                type="com.brown.kaew.keepnote.viewmodels.NoteEditorFragmentViewModel"
         />
     </data>
 

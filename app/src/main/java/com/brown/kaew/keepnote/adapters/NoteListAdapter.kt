@@ -66,7 +66,12 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
                             }
                             true
                         }
-                        else -> false
+                        else -> {
+                            it.apply {
+                                onItemSelected(position)
+                            }
+                            true
+                        }
                     }
                 },
                 noteList[position]
@@ -87,32 +92,22 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
         notifyItemChanged(position)
     }
 
-    private fun <T : RecyclerView.ViewHolder> T.onClick(event: (view: View, position: Int, type: Int) -> Unit): T {
-        itemView.setOnClickListener {
-            event.invoke(it, adapterPosition, itemViewType)
-        }
-        return this
-    }
-
-    private fun <T : RecyclerView.ViewHolder> T.onLongClick(event: (view: View, position: Int, type: Int) -> Boolean): T {
-        itemView.setOnLongClickListener {
-            event.invoke(it, adapterPosition, itemViewType)
-            true
-        }
-        return this
-    }
-
-
     fun updateNote(list: List<Note>) {
         this.noteList = list
         Log.i(this.javaClass.simpleName, "note size = ${noteList.size}")
         notifyDataSetChanged()
     }
 
-    //call from activity or fragment
     fun startActionMode(activity: Activity) {
         if (actionMode != null) {
             activity.startActionMode(actionModeCallback)
+        }
+    }
+
+    fun requireDestroyActionMode() {
+        if (actionMode != null) {
+            actionMode!!.finish()
+            destroyActionMode()
         }
     }
 
@@ -150,20 +145,24 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
         override fun onDestroyActionMode(mode: ActionMode) {
 //            notifyDataSetChanged()
             Log.i(this.javaClass.simpleName, "onDestroyActionMode")
-            if (selectedPosition.size > 0) {
-                for (position in selectedPosition) {
-                    noteList[position].isSelected = false
-                    notifyItemChanged(position)
-                }
-                selectedPosition.clear()
-            }
-            actionMode = null
+            destroyActionMode()
         }
+    }
+
+    private fun destroyActionMode() {
+        if (selectedPosition.size > 0) {
+            for (position in selectedPosition) {
+                noteList[position].isSelected = false
+                notifyItemChanged(position)
+            }
+            selectedPosition.clear()
+        }
+        actionMode = null
     }
 
     private fun deleteNotes() {
         val repository = InjectorUtils.getNoteRepository(parentContext)
-        if(selectedPosition.size>0) {
+        if (selectedPosition.size > 0) {
             runBlocking(Dispatchers.IO) {
                 for (position in selectedPosition) {
                     repository.deleteNote(noteList[position])
@@ -191,7 +190,7 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
                 }
             }
 
-//            binding.executePendingBindings()
+            binding.executePendingBindings()
         }
     }
 }

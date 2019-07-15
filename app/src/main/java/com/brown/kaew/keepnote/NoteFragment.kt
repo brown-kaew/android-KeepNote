@@ -37,6 +37,8 @@ class NoteFragment : Fragment() {
 
             // take a note
             tvTakeNote.setOnClickListener { view ->
+                //close contextual action bar before navigate
+                noteFragmentViewModel.adapter.requireDestroyActionMode()
                 view.findNavController().navigate(R.id.action_noteFragment_to_noteEditorFragment)
             }
 
