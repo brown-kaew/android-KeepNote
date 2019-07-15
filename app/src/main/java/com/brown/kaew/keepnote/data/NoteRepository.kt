@@ -44,4 +44,10 @@ class NoteRepository private constructor(private val noteDao: NoteDao) {
             noteDao.updateNote(note)
         }
     }
+
+    suspend fun deleteNote(note: Note) {
+        withContext(Dispatchers.IO) {
+            noteDao.delete(note)
+        }
+    }
 }
