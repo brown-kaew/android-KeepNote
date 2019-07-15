@@ -6,7 +6,7 @@
 
     <fragment android:id="@+id/noteFragment"
               android:name="com.brown.kaew.keepnote.NoteFragment"
-              android:label="NoteFragment">
+              android:label="KeepNote">
 
         <action android:id="@+id/action_noteFragment_to_noteEditorFragment"
                 app:destination="@id/noteEditorFragment"
@@ -16,7 +16,7 @@
 
     <fragment android:id="@+id/noteEditorFragment"
               android:name="com.brown.kaew.keepnote.NoteEditorFragment"
-              android:label="NoteEditorFragment">
+              android:label="">
 
         <argument
                 android:name="noteId"

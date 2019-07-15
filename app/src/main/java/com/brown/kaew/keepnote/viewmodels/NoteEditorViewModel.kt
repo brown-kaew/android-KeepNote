@@ -24,7 +24,7 @@ class NoteEditorViewModel(
     val note = MutableLiveData<String>("")
     val time: LiveData<String> = _time
 
-    var oldNote: Note = Note()
+    private var oldNote: Note = Note()
 
     init {
 
@@ -37,18 +37,25 @@ class NoteEditorViewModel(
         val noteLen = note.value.toString().length
 
         //if new note then insert otherwise update it
-        if (titleLen != 0 && noteLen != 0 && isNewNote) {
-            Log.i(this.javaClass.simpleName, "add new note")
-            viewModelScope.launch {
-                repository.insertNote(
-                    Note(title.value.toString(), note.value.toString(), _calendar)
-                )
+        if ((titleLen != 0 || noteLen != 0) && isNewNote) {
+            val newNote = Note(title.value.toString(), note.value.toString(), Calendar.getInstance())
+
+            //Because configuration change will call saveNote() (this function scope) in onStop()
+            //so, it need to compare between old and new one to ensure this note will not save only once if no data change.
+            if (isNoteChanged(oldNote)) {
+                Log.i(this.javaClass.simpleName, "add new note")
+                viewModelScope.launch {
+                    repository.insertNote(
+                        newNote
+                    )
+                }
+                oldNote = newNote
             }
         } else if (isNoteChanged(oldNote)) {
             Log.i(this.javaClass.simpleName, "update note")
             viewModelScope.launch {
                 repository.updateNote(
-                    Note(title.value.toString(), note.value.toString(), _calendar).apply {
+                    Note(title.value.toString(), note.value.toString(), Calendar.getInstance()).apply {
                         nId = noteId
                     }
                 )

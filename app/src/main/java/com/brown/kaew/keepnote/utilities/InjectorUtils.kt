@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.brown.kaew.keepnote.data.NoteDatabase
 import com.brown.kaew.keepnote.data.NoteRepository
 import com.brown.kaew.keepnote.viewmodels.NoteEditorViewModel
-import com.brown.kaew.keepnote.viewmodels.NoteViewModel
+import com.brown.kaew.keepnote.viewmodels.NoteFragmentViewModel
 
 object InjectorUtils {
 
-    private fun getNoteRepository(context: Context): NoteRepository {
+    fun getNoteRepository(context: Context): NoteRepository {
         return NoteRepository.getInstance(
             NoteDatabase.getInstance(context.applicationContext).noteDao()
         )
@@ -29,7 +29,7 @@ class NoteViewModelFactory(private val noteRepository: NoteRepository) : ViewMod
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return NoteViewModel(noteRepository) as T
+        return NoteFragmentViewModel(noteRepository) as T
     }
 }
 

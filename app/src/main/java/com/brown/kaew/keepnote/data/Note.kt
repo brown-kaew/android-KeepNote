@@ -13,4 +13,6 @@ data class Note(
 ) {
     @PrimaryKey(autoGenerate = true)
     var nId: Int = 0
+
+    var isSelected:Boolean = false
 }

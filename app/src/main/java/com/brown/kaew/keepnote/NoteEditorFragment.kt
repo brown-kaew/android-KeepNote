@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.brown.kaew.keepnote.databinding.FragmentNoteEditorBinding
 import com.brown.kaew.keepnote.utilities.InjectorUtils
+import com.brown.kaew.keepnote.utilities.NoteEditorViewModelFactory
 import com.brown.kaew.keepnote.viewmodels.NoteEditorViewModel
 
 class NoteEditorFragment : Fragment() {
@@ -19,8 +21,10 @@ class NoteEditorFragment : Fragment() {
     private val args by navArgs<NoteEditorFragmentArgs>()
     private val isNewNote: Boolean by lazy { args.noteId == -1 }
     private val viewModel: NoteEditorViewModel by lazy {
-        InjectorUtils.provideNoteEditorViewModelFactory(requireContext(), args.noteId)
-            .create(NoteEditorViewModel::class.java)
+        //        InjectorUtils.provideNoteEditorViewModelFactory(requireContext(), args.noteId)
+//            .create(NoteEditorViewModel::class.java)
+        ViewModelProviders.of(this,NoteEditorViewModelFactory(InjectorUtils.getNoteRepository(requireContext()),args.noteId) )
+            .get(NoteEditorViewModel::class.java)
     }
     private lateinit var binding: FragmentNoteEditorBinding
 
