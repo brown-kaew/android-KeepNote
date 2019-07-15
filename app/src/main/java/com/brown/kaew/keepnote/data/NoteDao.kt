@@ -10,10 +10,13 @@ interface NoteDao {
     fun getAll(): LiveData<List<Note>>
 
     @Query("SELECT * FROM note WHERE nId = :id")
-    fun getById(id: Int): LiveData<Note>
+    fun getById(id: Long): LiveData<Note>
+
+    @Query("SELECT * FROM note WHERE nId = :id")
+    fun getById2(id: Long): Note
 
     @Insert
-    fun insert(note: Note)
+    fun insert(note: Note): Long
 
     @Insert
     fun insertAll(vararg notes: Note)

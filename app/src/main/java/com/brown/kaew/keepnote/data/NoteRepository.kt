@@ -17,12 +17,18 @@ class NoteRepository private constructor(private val noteDao: NoteDao) {
 
     fun getAllNotes(): LiveData<List<Note>> = noteDao.getAll()
 
-    fun getById(id: Int): LiveData<Note> {
+    fun getById(id: Long): LiveData<Note> {
         return noteDao.getById(id)
     }
 
-    suspend fun insertNote(note: Note) {
-        withContext(Dispatchers.IO) {
+    suspend fun getById2(id: Long): Note {
+        return withContext(Dispatchers.IO) {
+            noteDao.getById2(id)
+        }
+    }
+
+    suspend fun insertNote(note: Note): Long {
+        return withContext(Dispatchers.IO) {
             noteDao.insert(note)
         }
     }

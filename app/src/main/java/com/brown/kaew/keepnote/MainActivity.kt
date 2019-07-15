@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 //        setContentView(R.layout.activity_main)
         Log.i(this.javaClass.simpleName, "onCreate()")
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = this@MainActivity
         binding.viewmodel = mViewModel
 
 

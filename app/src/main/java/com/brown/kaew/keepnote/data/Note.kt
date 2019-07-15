@@ -8,11 +8,11 @@ import java.util.*
 @Entity(tableName = "note")
 data class Note(
     @ColumnInfo var title: String = "",
-    @ColumnInfo val note: String = "",
-    @ColumnInfo val date: Calendar = Calendar.getInstance()
+    @ColumnInfo var note: String = "",
+    @ColumnInfo var date: Calendar = Calendar.getInstance()
 ) {
     @PrimaryKey(autoGenerate = true)
-    var nId: Int = 0
+    var nId: Long = 0
 
-    var isSelected:Boolean = false
+    var isSelected: Boolean = false
 }
