@@ -13,14 +13,8 @@ import kotlinx.coroutines.launch
 
 class NoteFragmentViewModel(private val repository: NoteRepository) : ViewModel() {
 
-    var i = 0
     val adapter = NoteListAdapter()
     val notes = repository.getAllNotes()
-
-    init {
-        Log.i(this.javaClass.simpleName, "init = $i")
-        i += 1
-    }
 
     fun insertNote(note: Note) {
         viewModelScope.launch {
@@ -38,10 +32,6 @@ class NoteFragmentViewModel(private val repository: NoteRepository) : ViewModel(
         viewModelScope.launch {
             repository.insertListOfNotes(list)
         }
-    }
-
-    fun saveInAdapterChanged() {
-
     }
 
     /**

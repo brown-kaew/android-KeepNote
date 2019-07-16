@@ -15,7 +15,7 @@ import kotlinx.coroutines.*
 
 class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
 
-    private var noteList = emptyList<Note>()
+    private val noteList = mutableListOf<Note>()
     private var selectedPosition = arrayListOf<Int>()
     private var actionMode: ActionMode? = null
     private lateinit var parentContext: Context
@@ -61,6 +61,7 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
                         null -> {
                             // Start the CAB using the ActionMode.Callback defined above
                             actionMode = it.startActionMode(actionModeCallback)
+                            Log.i(this.javaClass.simpleName, "create action mode $actionMode")
                             it.apply {
                                 onItemSelected(position)
                             }
@@ -89,18 +90,30 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
         }
         actionMode!!.title = selectedPosition.size.toString()
         Log.i("selectedList", "$selectedPosition")
+
+        if (selectedPosition.size == 0) {
+            actionMode!!.finish()
+        }
         notifyItemChanged(position)
     }
 
     fun updateNote(list: List<Note>) {
-        this.noteList = list
+        this.noteList.apply {
+            clear()
+            addAll(list)
+            reverse()
+        }
         Log.i(this.javaClass.simpleName, "note size = ${noteList.size}")
         notifyDataSetChanged()
     }
 
-    fun startActionMode(activity: Activity) {
+    fun shouldStartActionMode(activity: Activity) {
         if (actionMode != null) {
-            activity.startActionMode(actionModeCallback)
+            actionMode = null
+            actionMode = activity.startActionMode(actionModeCallback)
+            actionMode!!.title = selectedPosition.size.toString()
+            Log.i(this.javaClass.simpleName, "re-create action mode $actionMode")
+
         }
     }
 
@@ -113,10 +126,11 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
 
 
     private val actionModeCallback = object : ActionMode.Callback {
-        // Called when the action mode is created; startActionMode() was called
+        // Called when the action mode is created; shouldStartActionMode() was called
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             // Inflate a menu resource providing context menu items
             val inflater: MenuInflater = mode.menuInflater
+            mode.title = selectedPosition.size.toString()
             inflater.inflate(R.menu.fragment_note_menu, menu)
             return true
         }
@@ -143,13 +157,12 @@ class NoteListAdapter : RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>
 
         // Called when the user exits the action mode
         override fun onDestroyActionMode(mode: ActionMode) {
-//            notifyDataSetChanged()
-            Log.i(this.javaClass.simpleName, "onDestroyActionMode")
             destroyActionMode()
         }
     }
 
     private fun destroyActionMode() {
+        Log.i(this.javaClass.simpleName, "onDestroyActionMode $actionMode")
         if (selectedPosition.size > 0) {
             for (position in selectedPosition) {
                 noteList[position].isSelected = false
