@@ -1,11 +1,15 @@
 package com.brown.kaew.keepnote
 
+import android.content.Context
+import android.inputmethodservice.KeyboardView
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,7 +26,10 @@ class NoteEditorFragment : Fragment() {
     private val viewModel: NoteEditorFragmentViewModel by lazy {
         //        InjectorUtils.provideNoteEditorViewModelFactory(requireContext(), args.noteId)
 //            .create(NoteEditorFragmentViewModel::class.java)
-        ViewModelProviders.of(this,NoteEditorViewModelFactory(InjectorUtils.getNoteRepository(requireContext()),args.noteId) )
+        ViewModelProviders.of(
+            this,
+            NoteEditorViewModelFactory(InjectorUtils.getNoteRepository(requireContext()), args.noteId)
+        )
             .get(NoteEditorFragmentViewModel::class.java)
     }
     private lateinit var binding: FragmentNoteEditorBinding
@@ -53,6 +60,7 @@ class NoteEditorFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.i(this.javaClass.simpleName, "call saveNote()")
+        hideKeyboard()
         viewModel.saveNote()
     }
 
@@ -61,4 +69,18 @@ class NoteEditorFragment : Fragment() {
         Log.i(this.javaClass.simpleName, "onDetach()")
 
     }
+
+
+    private fun hideKeyboard() {
+        val inputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        val currentFocusedView = requireActivity().currentFocus
+        if (currentFocusedView != null) {
+            inputMethodManager.hideSoftInputFromWindow(
+                currentFocusedView.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
+        }
+    }
+
 }

@@ -9,12 +9,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.brown.kaew.keepnote.adapters.NoteListAdapter
 import com.brown.kaew.keepnote.databinding.FragmentNoteBinding
 import com.brown.kaew.keepnote.utilities.InjectorUtils
 import com.brown.kaew.keepnote.utilities.NoteViewModelFactory
 import com.brown.kaew.keepnote.viewmodels.NoteFragmentViewModel
+import java.util.*
 
 class NoteFragment : Fragment() {
 
@@ -35,105 +37,38 @@ class NoteFragment : Fragment() {
         binding.viewModel = noteFragmentViewModel
         binding.apply {
 
-            // take a note
-            tvTakeNote.setOnClickListener { view ->
-                //close contextual action bar before navigate
-                noteFragmentViewModel.adapter.requireDestroyActionMode()
-                view.findNavController().navigate(R.id.action_noteFragment_to_noteEditorFragment)
-            }
-
             //RecyclerView
             listNotes.setHasFixedSize(true)
             listNotes.layoutManager = StaggeredGridLayoutManager(
                 if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3,
                 StaggeredGridLayoutManager.VERTICAL
             )
-//            val noteListAdapter = NoteListAdapter()
-//            listNotes.adapter = noteListAdapter
 
             //apply adapter from viewModel
             listNotes.adapter = noteFragmentViewModel.adapter
 
             //Observe data
             noteFragmentViewModel.notes.observe(this@NoteFragment, Observer {
-//                noteListAdapter.updateNote(it)
+                Log.i(this.javaClass.simpleName,"observe list")
                 noteFragmentViewModel.adapter.updateNote(it)
             })
 
+            // add new note button
+            tvTakeNote.setOnClickListener { view ->
+                //close contextual action bar before navigate
+                noteFragmentViewModel.adapter.requireDestroyActionMode()
+                view.findNavController().navigate(R.id.action_noteFragment_to_noteEditorFragment)
+            }
+
             //start Action Mode if actionMode in adapter not null
-            noteFragmentViewModel.adapter.startActionMode(requireActivity())
+            noteFragmentViewModel.adapter.shouldStartActionMode(requireActivity())
 
         }
         return binding.root
     }
 
-    override fun onStop() {
-        super.onStop()
-        noteFragmentViewModel.saveInAdapterChanged()
+    private fun showLogI(string: String) {
+        Log.i(this.javaClass.simpleName, string)
     }
-
-
-    /* private val onClickListener: (View, Int, Int) -> Unit = { view, position, type ->
-         run { Log.i(this.javaClass.simpleName, "onClick()") }
-     }
-
-     private val onLongClickListener: (View, Int, Int) -> Boolean = { view, position, type ->
-         run {
-             Log.i(this.javaClass.simpleName, "onLongClick()")
-             // Called when the user long-clicks on someView
-             when (actionMode) {
-                 null -> {
-                     // Start the CAB using the ActionMode.Callback defined above
-                     actionMode = NoteActionModeCallback().startActionMode(view, R.menu.fragment_note_menu)
- //                            it.apply {
- //                                isSelected = !isSelected
- //                                if (isSelected) {
- //                                    setBackgroundResource(R.drawable.bg_rounded_white_with_border)
- //                                } else {
- //                                    setBackgroundResource(R.drawable.bg_rounded_white)
- //                                }
- //                            }
-                     true
-                 }
-                 else -> false
-             }
-         }
-
-     }
-
-     private val actionModeCallback = object : ActionMode.Callback {
-         // Called when the action mode is created; startActionMode() was called
-         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-             // Inflate a menu resource providing context menu items
-             val inflater: MenuInflater = mode.menuInflater
-             inflater.inflate(R.menu.fragment_note_menu, menu)
-             return true
-         }
-
-         // Called each time the action mode is shown. Always called after onCreateActionMode, but
-         // may be called multiple times if the mode is invalidated.
-         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-             return false // Return false if nothing is done
-         }
-
-         // Called when the user selects a contextual menu item
-         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-             return when (item.itemId) {
-                 R.id.action_delete -> {
- //                    shareCurrentItem()
-                     mode.finish() // Action picked, so close the CAB
-                     true
-                 }
-                 else -> false
-             }
-         }
-
-         // Called when the user exits the action mode
-         override fun onDestroyActionMode(mode: ActionMode) {
- //            notifyDataSetChanged()
-             Log.i(this.javaClass.simpleName, "onDestroyActionMode")
-             actionMode = null
-         }
-     }*/
 
 }

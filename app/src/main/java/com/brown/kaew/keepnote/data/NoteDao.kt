@@ -6,7 +6,13 @@ import androidx.room.*
 @Dao
 interface NoteDao {
 
-    @Query("SELECT * FROM note")
+    @Transaction
+    fun deleteAllAndInsert(list: List<Note>) {
+        deletedAll()
+        insertList(list)
+    }
+
+    @Query("SELECT * FROM note ORDER BY nId DESC")
     fun getAll(): LiveData<List<Note>>
 
     @Query("SELECT * FROM note WHERE nId = :id")
@@ -15,6 +21,9 @@ interface NoteDao {
     @Query("SELECT * FROM note WHERE nId = :id")
     fun getById2(id: Long): Note
 
+    @Query("DELETE FROM note")
+    fun deletedAll()
+
     @Insert
     fun insert(note: Note): Long
 
@@ -22,7 +31,7 @@ interface NoteDao {
     fun insertAll(vararg notes: Note)
 
     @Insert
-    fun insertList(merchant: List<Note>)
+    fun insertList(note: List<Note>)
 
     @Update
     fun updateNote(note: Note)
