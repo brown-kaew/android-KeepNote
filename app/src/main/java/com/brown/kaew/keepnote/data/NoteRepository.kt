@@ -14,7 +14,6 @@ class NoteRepository private constructor(private val noteDao: NoteDao) {
 
     }
 
-
     fun getAllNotes(): LiveData<List<Note>> = noteDao.getAll()
 
     fun getById(id: Long): LiveData<Note> {
@@ -56,4 +55,11 @@ class NoteRepository private constructor(private val noteDao: NoteDao) {
             noteDao.delete(note)
         }
     }
+
+    suspend fun deleteAllAndInsert(list: List<Note>) {
+        withContext(Dispatchers.IO) {
+            noteDao.deleteAllAndInsert(list)
+        }
+    }
+
 }
